@@ -51,14 +51,12 @@ def setup_logging(clean=False):
     os.makedirs(log_directory, exist_ok=True)
 
     level = logging.INFO
-    logging.basicConfig(
-        level=logging.ERROR,
-        format='%(asctime)s | %(name)s | %(levelname)s | %(module)s | %(message)s',
-        filename=log_file,
-        filemode='a',
-        encoding='utf-8',
-        force=True,
-    )
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.ERROR)
+    handler = logging.FileHandler(filename=log_file, mode='a', encoding='utf-8')
+    formatter = logging.Formatter('%(asctime)s | %(name)s | %(levelname)s | %(module)s | %(message)s')
+    handler.setFormatter(formatter)
+    root_logger.addHandler(handler)
     log.setLevel(
         logging.DEBUG
     )   # log to file is always at level debug for facility `sd`
